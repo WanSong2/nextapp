@@ -1,0 +1,15 @@
+<svg id="ico_language" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30">
+  <rect id="area" width="30" height="30" fill="#fff" opacity="0.001"/>
+  <g id="그룹_1528" data-name="그룹 1528" transform="translate(3754 11054)">
+    <g id="타원_235" data-name="타원 235" transform="translate(-3751 -11051)" fill="none" stroke="#222" stroke-width="2">
+      <circle cx="12" cy="12" r="12" stroke="none"/>
+      <circle cx="12" cy="12" r="11" fill="none"/>
+    </g>
+    <g id="타원_236" data-name="타원 236" transform="translate(-3744 -11051)" fill="none" stroke="#222" stroke-width="2">
+      <ellipse cx="5" cy="12" rx="5" ry="12" stroke="none"/>
+      <ellipse cx="5" cy="12" rx="4" ry="11" fill="none"/>
+    </g>
+    <rect id="사각형_1182" data-name="사각형 1182" width="20" height="2" transform="translate(-3749 -11044)" fill="#222"/>
+    <rect id="사각형_1183" data-name="사각형 1183" width="20" height="2" transform="translate(-3749 -11037)" fill="#222"/>
+  </g>
+</svg>
