@@ -15,11 +15,11 @@ export default function RootLayout({ children }) {
               <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
                 <Link href="/">Home</Link>
               </button>
-              <button className="bg-gray-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
-                <Link href="/"><Link href="/schdule">Schdule</Link></Link>
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                <Link href="/schdule">Schdule</Link>
               </button>
-              <button className="bg-green-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
-                <Link href="/"><Link href="/dashboard">Dashboard</Link></Link>
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+                <Link href="/dashboard">Dashboard</Link>
               </button>
             </div>
           </header>
