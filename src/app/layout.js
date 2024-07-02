@@ -1,8 +1,7 @@
-import './globals.css'
-import { Disclosure } from '@headlessui/react'
-import ReactQueryProviders from '../hooks/useReactQuery'
-import Link from 'next/link';
-
+import "./globals.css";
+import { Disclosure } from "@headlessui/react";
+import ReactQueryProviders from "../hooks/useReactQuery";
+import Link from "next/link";
 
 export default function RootLayout({ children }) {
   return (
@@ -12,13 +11,13 @@ export default function RootLayout({ children }) {
           <Disclosure as="nav" className="bg-gray-800"></Disclosure>
           <header className="bg-white shadow">
             <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+              <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-2">
                 <Link href="/">Home</Link>
               </button>
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+              <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-2">
                 <Link href="/schdule">Schdule</Link>
               </button>
-              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2">
+              <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-2">
                 <Link href="/dashboard">Dashboard</Link>
               </button>
             </div>
@@ -31,5 +30,5 @@ export default function RootLayout({ children }) {
         </div>
       </body>
     </html>
-  )
+  );
 }
