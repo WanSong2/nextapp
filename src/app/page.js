@@ -10,6 +10,7 @@ import {
   Suspense,
   useId,
   useReducer,
+  useRef,
 } from "react";
 import { createContext, useContext } from "react";
 
@@ -69,6 +70,13 @@ export default function Home() {
   const passwordHintId = useId();
 
   const [state, dispatch] = useReducer(reducer, { age: 42, name: "songwan" });
+
+  const initialValue = {
+    age: 8,
+    name: "songwan",
+  };
+
+  const buttonRef = useRef(initialValue);
 
   return (
     <ThemeContext.Provider value={theme}>
@@ -167,19 +175,26 @@ export default function Home() {
 
         <div className="text-2xl mb-8 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <h2>[useRef]</h2>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            type="text"
+            ref={buttonRef}
+          />
           <button
             className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mt-6"
-            onClick={(e) => dispatch({ type: "incremented_age" })}
+            onClick={handleClick}
           >
-            Increment age
+            buttonRef
           </button>
-          <p>
-            Hello! You are Age: {state.age}. Name: {state.name}
-          </p>
         </div>
       </div>
     </ThemeContext.Provider>
   );
+
+  function handleClick() {
+    console.log(buttonRef.current);
+    buttonRef.current.focus();
+  }
 }
 
 function SearchResults({ query }) {
