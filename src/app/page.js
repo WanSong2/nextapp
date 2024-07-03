@@ -9,12 +9,17 @@ import {
   useDeferredValue,
   Suspense,
   useId,
+  useReducer,
 } from "react";
 import { createContext, useContext } from "react";
 
 const hardCalculate = (number) => {
   console.log("어려운 계산!");
-  for (let i = 0; i < 99999; i++) {} // 생각하는 시간
+  let i = 1;
+  while (i <= 999999) {
+    i++;
+  }
+  // 생각하는 시간
   return number + 10000;
 };
 
@@ -25,16 +30,28 @@ const easyCalculate = (number) => {
 
 const ThemeContext = createContext(null);
 
+function reducer(state, action) {
+  console.log("state", state);
+  console.log("action", action);
+  switch (action.type) {
+    case "incremented_age": {
+      return {
+        ...state,
+        age: state.age + 1,
+      };
+    }
+  }
+  throw Error("Unknown action.");
+}
+
 export default function Home() {
   const [hardNumber, setHardNumber] = useState(1);
   const [easyNumber, setEasyNumber] = useState(1);
 
-  /*
-    const hardSum = useMemo(() => {
-      return hardCalculate(hardNumber);
-    }, [hardNumber]);
-  */
-  const hardSum = hardCalculate(hardNumber);
+  const hardSum = useMemo(() => {
+    return hardCalculate(hardNumber);
+  }, [hardNumber]);
+  //const hardSum = hardCalculate(hardNumber);
   const easySum = easyCalculate(easyNumber);
 
   const handleChangeText = useCallback(
@@ -50,6 +67,8 @@ export default function Home() {
   const isStale = query !== deferredQuery;
 
   const passwordHintId = useId();
+
+  const [state, dispatch] = useReducer(reducer, { age: 42, name: "songwan" });
 
   return (
     <ThemeContext.Provider value={theme}>
@@ -106,7 +125,7 @@ export default function Home() {
           <div>
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
-              for="username"
+              htmlFor="username"
             >
               Search albums:
             </label>
@@ -132,14 +151,37 @@ export default function Home() {
           />
           <p id={passwordHintId}></p>
         </div>
+
+        <div className="text-2xl mb-8 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <h2>[useReducer]</h2>
+          <button
+            className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mt-6"
+            onClick={(e) => dispatch({ type: "incremented_age" })}
+          >
+            Increment age
+          </button>
+          <p>
+            Hello! You are Age: {state.age}. Name: {state.name}
+          </p>
+        </div>
+
+        <div className="text-2xl mb-8 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <h2>[useRef]</h2>
+          <button
+            className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mt-6"
+            onClick={(e) => dispatch({ type: "incremented_age" })}
+          >
+            Increment age
+          </button>
+          <p>
+            Hello! You are Age: {state.age}. Name: {state.name}
+          </p>
+        </div>
       </div>
     </ThemeContext.Provider>
   );
 }
 
 function SearchResults({ query }) {
-  for (let i = 0; i < 2500; i++) {
-    console.log(i);
-  }
   return query;
 }
