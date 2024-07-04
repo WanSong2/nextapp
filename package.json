@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "start-json-server": "json-server --watch db.json --port 3001"
+    "start-json-server": "json-server --watch db.json --port 3002"
   },
   "dependencies": {
     "@headlessui/react": "^2.0.3",
