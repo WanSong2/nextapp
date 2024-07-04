@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Loading from "../../components/Loading";
 
 export default function Insight() {
   const [insightDate, setInsightDate] = useState({});
@@ -18,6 +19,7 @@ export default function Insight() {
 
   return (
     <>
+      {!isLoading && <Loading />}
       {isLoading && (
         <div className="grid grid-flow-row auto-rows-max">
           {insightDate?.map((insight) => {
