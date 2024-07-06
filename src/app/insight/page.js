@@ -13,7 +13,6 @@ export default function Insight() {
       setInsightDate(insight);
       setIsLoading(true);
     };
-
     fetchData();
   }, []);
 
@@ -34,9 +33,6 @@ export default function Insight() {
                   <Summery insight={insight} />
                   <Fares fares={fares} />
                 </div>
-                {
-                  //JSON.stringify(insight, null, 2)
-                }
               </div>
             );
           })}
@@ -63,31 +59,41 @@ const getData = async () => {
 };
 
 const Summery = ({ insight }) => {
+  const { itinerary } = insight;
   return (
-    <div className="row-span-3">
-      <ul className="list-disc">
-        <li>
-          <p className="text-sm">스케줄</p>
-          <p className="text-sm">{insight.scheduleId}</p>
+    <div className="row-span-3 w-64">
+      <ul className="list-none">
+        <li className="list-none mb-3">
+          {itinerary.map((journey, index) => {
+            return (
+              <ul className="list-none" key={index}>
+                <li className="mb-3 whitespace-normal">
+                  <p className="text-sm mb-2">여정 {index + 1}</p>
+                  <div key={journey} className="text-xs flex flex-row">
+                    {
+                      insight.carrier[index].map((ca, index) => {
+                        return <><img className="text-xs" key={index}
+                          src={`https://sabre.etoursoft.co.kr/images/carrier_logo/30/${ca}.png`}
+                          alt={ca}
+                        /> {journey.join("~")}</>
+                      })
+                    }
+                  </div>
+                </li>
+              </ul>
+            )
+          })}
         </li>
-        <li>
-          <p className="text-sm">carrier</p>
-          <p className="text-sm">{insight.carrier.join("-")}</p>
+        <li className="mb-3">
+          <p className="text-sm">TAX</p>
+          <p className="text-xs">{insight.tax.toLocaleString('ko-KR')}원</p>
         </li>
-        <li>
-          <p className="text-sm">flightNo</p>
-          <p className="text-sm">{insight.flightNo.join("-")}</p>
+        <li className="mb-3">
+          <p className="text-sm">유류할증료</p>
+          <p className="text-xs">{insight.qCharge.toLocaleString('ko-KR')}원</p>
         </li>
-        <li>
-          <p className="text-sm">tax</p>
-          <p className="text-sm">{insight.tax}</p>
-        </li>
-        <li>
-          <p className="text-sm">qCharge</p>
-          <p className="text-sm">{insight.qCharge}</p>
-        </li>
-      </ul>
-    </div>
+      </ul >
+    </div >
   );
 };
 
@@ -97,8 +103,8 @@ const Fares = ({ fares }) => {
       {Object.keys(fares)?.map((fareType) => {
         return (
           <div className="col-span-1" key={fareType}>
-            <ul className="list-disc">
-              <p className="font-bold text-sm">
+            <ul className="list-none">
+              <p className="font-bold text-xs h-16">
                 [
                 {`${Type[fareType.split("/")[0]]}${fareType.split("/").length > 1 ? '/' + CardType[fareType.split("/")[1]] : ''}`}
                 ]
@@ -116,12 +122,12 @@ function FaresDetail({ fare }) {
   return (
     <>
       {fare.map((detail, index) => {
-        const fontColor = detail.otaId !== "-" ? "text-red-600" : "";
+        const fontColor = detail.otaId !== "-" ? "bg-indigo-300" : "";
         return (
-          <li>
-            <p className="text-sm">요금: {detail.farePerAdult}</p>
-            <p className="text-sm">랭크: {detail.ranking}</p>
-            <p className="text-sm">OTA: {detail.otaId}</p>
+          <li className={`w-22 rounded bg-blue-50 mb-3 ${fontColor}`} key={index}>
+            <p className="text-xs mb-1">순위: {detail.ranking}</p>
+            <p className="text-xs mb-1">{detail.farePerAdult.toLocaleString('ko-KR')}원</p>
+            {detail.otaId === 'LTT017' ? <p className="text-xs">OTA:롯데관광</p> : ''}
           </li>
         );
       })}

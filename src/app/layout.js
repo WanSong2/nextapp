@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
                 <Link href="/schdule">Schdule</Link>
               </button>
               <button className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-2">
-                <Link href="/insight">Insight</Link>
+                <Link href="/insight">Naver Insight</Link>
               </button>
             </div>
           </header>

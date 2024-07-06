@@ -35,6 +35,8 @@ app.prepare().then(() => {
       // This tells it to parse the query portion of the URL.
       //console.log("req", req);
       const parsedUrl = parse(req.url, true);
+
+      console.log(parsedUrl);
       handle(req, res, parsedUrl);
     })
     .listen(PORT + 1, (err) => {
