@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Loading from "@/components/Loading";
+import SearchForm from "@/components/SearchForm";
 
 export default function Insight() {
   const [insightDate, setInsightDate] = useState({});
@@ -16,8 +17,14 @@ export default function Insight() {
     fetchData();
   }, []);
 
+  // 검색 form
+  const onRefresh = (...params) => {
+    console.log(...params);
+  }
+
   return (
     <>
+      <SearchForm onRefresh={onRefresh} />
       {!isLoading && <Loading />}
       {isLoading && (
         <div className="grid grid-flow-row auto-rows-max">
