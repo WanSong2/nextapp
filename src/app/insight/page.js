@@ -5,14 +5,21 @@ import Loading from "@/components/Loading";
 import SearchForm from "@/components/SearchForm";
 
 export default function Insight() {
-  const [insightDate, setInsightDate] = useState({});
-  const [isLoading, setIsLoading] = useState();
+  const [insightData, setInsightData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      const { insight } = await getData();
-      setInsightDate(insight);
       setIsLoading(true);
+      try {
+        const { data } = await getData();
+        console.log(data);
+        setInsightData(JSON.parse(data));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
     fetchData();
   }, []);
@@ -20,25 +27,24 @@ export default function Insight() {
   // 검색 form
   const onRefresh = (...params) => {
     console.log(...params);
-  }
+  };
 
   return (
     <>
       <SearchForm onRefresh={onRefresh} />
-      {!isLoading && <Loading />}
-      {isLoading && (
+      {isLoading && <Loading />}
+      {!isLoading && (
         <div className="grid grid-flow-row auto-rows-max">
-          {insightDate?.map((insight) => {
-            const { scheduleId } = insight;
-            const { fares } = insight;
+          {insightData?.map((insight) => {
+            const { scheduleId, fares } = insight;
             return (
               <div
                 key={scheduleId}
                 className="mb-8 bg-slate-50 shadow-md rounded px-8 pt-6 pb-8 mb-2"
               >
                 <div className="grid grid-rows-1 grid-flow-col gap-4">
-                  <Summery insight={insight} />
-                  <Fares fares={fares} />
+                  <Summery key={scheduleId} insight={insight} />
+                  <Fares key={scheduleId} fares={fares} />
                 </div>
               </div>
             );
@@ -51,14 +57,18 @@ export default function Insight() {
 
 const getData = async () => {
   try {
-    const response = await fetch("http://localhost:3002/result", {
-      method: "GET",
-      mode: "cors",
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      "https://local.etoursoft.co.kr:8081/naver/naverInsight.lts",
+      {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: "trip=oneWay&dep1=ICN&arr1=NRT&depdate1=20240915&fareType=economyClass",
+      }
+    );
     return await response.json();
   } catch (error) {
     return {};
@@ -77,30 +87,35 @@ const Summery = ({ insight }) => {
                 <li className="mb-3 whitespace-normal">
                   <p className="text-sm mb-2">여정 {index + 1}</p>
                   <div key={journey} className="text-xs flex flex-row">
-                    {
-                      insight.carrier[index].map((ca, index) => {
-                        return <><img className="text-xs" key={index}
-                          src={`https://sabre.etoursoft.co.kr/images/carrier_logo/30/${ca}.png`}
-                          alt={ca}
-                        /> {journey.join("~")}</>
-                      })
-                    }
+                    {insight.carrier[index].map((ca, index) => {
+                      return (
+                        <>
+                          <img
+                            className="text-xs"
+                            key={index}
+                            src={`https://sabre.etoursoft.co.kr/images/carrier_logo/30/${ca}.png`}
+                            alt={ca}
+                          />{" "}
+                          {journey.join("~")}
+                        </>
+                      );
+                    })}
                   </div>
                 </li>
               </ul>
-            )
+            );
           })}
         </li>
         <li className="mb-3">
           <p className="text-sm">TAX</p>
-          <p className="text-xs">{insight.tax.toLocaleString('ko-KR')}원</p>
+          <p className="text-xs">{insight.tax.toLocaleString("ko-KR")}원</p>
         </li>
         <li className="mb-3">
           <p className="text-sm">유류할증료</p>
-          <p className="text-xs">{insight.qCharge.toLocaleString('ko-KR')}원</p>
+          <p className="text-xs">{insight.qCharge.toLocaleString("ko-KR")}원</p>
         </li>
-      </ul >
-    </div >
+      </ul>
+    </div>
   );
 };
 
@@ -113,7 +128,11 @@ const Fares = ({ fares }) => {
             <ul className="list-none">
               <p className="font-bold text-xs h-16">
                 [
-                {`${Type[fareType.split("/")[0]]}${fareType.split("/").length > 1 ? '/' + CardType[fareType.split("/")[1]] : ''}`}
+                {`${Type[fareType.split("/")[0]]}${
+                  fareType.split("/").length > 1
+                    ? "/" + CardType[fareType.split("/")[1]]
+                    : ""
+                }`}
                 ]
               </p>
               <FaresDetail fare={fares[fareType]} />
@@ -131,10 +150,19 @@ function FaresDetail({ fare }) {
       {fare.map((detail, index) => {
         const fontColor = detail.otaId !== "-" ? "bg-indigo-300" : "";
         return (
-          <li className={`w-22 rounded bg-blue-50 mb-3 ${fontColor}`} key={index}>
+          <li
+            className={`w-22 rounded bg-blue-50 mb-3 ${fontColor}`}
+            key={index}
+          >
             <p className="text-xs mb-1">순위: {detail.ranking}</p>
-            <p className="text-xs mb-1">{detail.farePerAdult.toLocaleString('ko-KR')}원</p>
-            {detail.otaId === 'LTT017' ? <p className="text-xs">OTA:롯데관광</p> : ''}
+            <p className="text-xs mb-1">
+              {detail.farePerAdult.toLocaleString("ko-KR")}원
+            </p>
+            {detail.otaId === "LTT017" ? (
+              <p className="text-xs">OTA:롯데관광</p>
+            ) : (
+              ""
+            )}
           </li>
         );
       })}
