@@ -187,6 +187,17 @@ export default function Home() {
             buttonRef
           </button>
         </div>
+
+        <div className="text-2xl mb-8 bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <h2>[handleClick]</h2>
+          <AlertButton message="Playing!">
+            Play Movie
+          </AlertButton>
+          <AlertButton message="Uploading!">
+            Upload Image
+          </AlertButton>
+        </div>
+
       </div>
     </ThemeContext.Provider>
   );
@@ -199,4 +210,12 @@ export default function Home() {
 
 function SearchResults({ query }) {
   return query;
+}
+
+function AlertButton({ message, children }) {
+  return (
+    <button onClick={() => alert(message)}>
+      {children}
+    </button>
+  );
 }
