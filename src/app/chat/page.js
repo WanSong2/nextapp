@@ -1,31 +1,28 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import { ChatRoom } from "@/components/chat/ChatRoom";
+import { useOnlineStatus } from "@/hooks/chat/useOnlineStatus";
 
 export default function App() {
+  const [roomId, setRoomId] = useState("general");
+  const isOnline = useOnlineStatus();
 
-    const [roomId, setRoomId] = useState('general');
+  console.log("roomId", roomId);
+  console.log("isOnline", isOnline);
 
-    console.log('roomId', roomId);
-
-    return (
-        <>
-            <label>
-                Choose the chat room:{' '}
-                <select
-                    value={roomId}
-                    onChange={e => setRoomId(e.target.value)}
-                >
-                    <option value="general">general</option>
-                    <option value="travel">travel</option>
-                    <option value="music">music</option>
-                </select>
-            </label>
-            <hr />
-            <ChatRoom
-                roomId={roomId}
-            />
-        </>
-    );
+  return (
+    <>
+      <label>
+        Choose the chat room:{" "}
+        <select value={roomId} onChange={(e) => setRoomId(e.target.value)}>
+          <option value="general">general</option>
+          <option value="travel">travel</option>
+          <option value="music">music</option>
+        </select>
+      </label>
+      <hr />
+      <ChatRoom roomId={roomId} />
+    </>
+  );
 }
